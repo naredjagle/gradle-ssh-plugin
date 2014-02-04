@@ -17,7 +17,7 @@ import org.hidetake.gradle.ssh.api.*
  */
 @TupleConstructor
 @Slf4j
-class DefaultOperationHandler extends AbstractOperationHandler {
+class DefaultOperationHandler implements OperationHandler {
     final SshSpec sshSpec
     final SessionSpec sessionSpec
     final Session session
@@ -29,7 +29,7 @@ class DefaultOperationHandler extends AbstractOperationHandler {
     }
 
     @Override
-    void shell(Map<String, Object> options, Closure interactions) {
+    void shell(Map<String, Object> options = [:], Closure interactions) {
         log.info('Executing shell')
 
         def lifecycleManager = new SessionLifecycleManager()
@@ -56,7 +56,7 @@ class DefaultOperationHandler extends AbstractOperationHandler {
     }
 
     @Override
-    String execute(Map<String, Object> options, String command, Closure interactions) {
+    String execute(Map<String, Object> options = [:], String command, Closure interactions = {}) {
         log.info("Executing command: ${command}")
 
         def lifecycleManager = new SessionLifecycleManager()
@@ -88,7 +88,7 @@ class DefaultOperationHandler extends AbstractOperationHandler {
     }
 
     @Override
-    String executeSudo(Map<String, Object> options, String command) {
+    String executeSudo(Map<String, Object> options = [:], String command) {
         log.info("Executing command with sudo support: ${command}")
 
         def prompt = UUID.randomUUID().toString()
@@ -118,7 +118,7 @@ class DefaultOperationHandler extends AbstractOperationHandler {
     }
 
     @Override
-    CommandContext executeBackground(Map<String, Object> options, String command) {
+    CommandContext executeBackground(Map<String, Object> options = [:], String command) {
         log.info("Executing command in background: ${command}")
 
         def channel = session.openChannel('exec') as ChannelExec
@@ -136,7 +136,7 @@ class DefaultOperationHandler extends AbstractOperationHandler {
     }
 
     @Override
-    void get(Map<String, Object> options, String remote, String local) {
+    void get(Map<String, Object> options = [:], String remote, String local) {
         log.info("Get: ${remote} -> ${local}")
         def channel = session.openChannel('sftp') as ChannelSftp
         options.each { k, v -> channel[k] = v }
@@ -151,7 +151,7 @@ class DefaultOperationHandler extends AbstractOperationHandler {
     }
 
     @Override
-    void put(Map<String, Object> options, String local, String remote) {
+    void put(Map<String, Object> options = [:], String local, String remote) {
         log.info("Put: ${local} -> ${remote}")
         def channel = session.openChannel('sftp') as ChannelSftp
         options.each { k, v -> channel[k] = v }

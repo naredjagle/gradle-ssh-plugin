@@ -15,7 +15,7 @@ import org.hidetake.gradle.ssh.api.SessionSpec
  */
 @TupleConstructor
 @Slf4j
-class DryRunOperationHandler extends AbstractOperationHandler {
+class DryRunOperationHandler implements OperationHandler {
     final SessionSpec spec
 
     @Override
@@ -24,35 +24,35 @@ class DryRunOperationHandler extends AbstractOperationHandler {
     }
 
     @Override
-    void shell(Map<String, Object> options, Closure interactions) {
+    void shell(Map<String, Object> options = [:], Closure interactions) {
         log.info('Executing shell')
     }
 
     @Override
-    String execute(Map<String, Object> options, String command, Closure interactions) {
+    String execute(Map<String, Object> options = [:], String command, Closure interactions = {}) {
         log.info("Executing command: ${command}")
         null
     }
 
     @Override
-    String executeSudo(Map options, String command) {
+    String executeSudo(Map<String, Object> options = [:], String command) {
         log.info("Executing command with sudo support: ${command}")
         null
     }
 
     @Override
-    CommandContext executeBackground(Map<String, Object> options, String command) {
+    CommandContext executeBackground(Map<String, Object> options = [:], String command) {
         log.info("Executing command in background: ${command}")
         new DryRunCommandContext()
     }
 
     @Override
-    void get(Map<String, Object> options, String remote, String local) {
+    void get(Map<String, Object> options = [:], String remote, String local) {
         log.info("Get: ${remote} -> ${local}")
     }
 
     @Override
-    void put(Map<String, Object> options, String local, String remote) {
+    void put(Map<String, Object> options = [:], String local, String remote) {
         log.info("Put: ${local} -> ${remote}")
     }
 }
