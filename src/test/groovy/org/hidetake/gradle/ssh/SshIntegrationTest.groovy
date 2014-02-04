@@ -21,7 +21,7 @@ class SshIntegrationTest extends Specification {
         task.perform()
 
         then:
-        1 * spy.execute(_, 'ls -l')
+        1 * spy.execute(_, 'ls -l', _)
     }
 
     def "dry run task with sshexec"() {
@@ -41,7 +41,7 @@ class SshIntegrationTest extends Specification {
         task.execute()
 
         then:
-        1 * spy.execute(_, 'ls -l')
+        1 * spy.execute(_, 'ls -l', _)
     }
 
 
