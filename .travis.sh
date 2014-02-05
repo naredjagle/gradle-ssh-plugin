@@ -13,7 +13,7 @@ function acceptance_test () {
     grep localhost ~/.ssh/known_hosts
 
     mkdir -p build/reports
-    ./gradlew -i -s -p acceptance-test test aggressiveTest > build/reports/acceptance-test
+    ./gradlew -i -s -p acceptance-test test aggressiveTest > "build/reports/acceptance-test.log" 2>&1
 }
 
 function publish_report () {
